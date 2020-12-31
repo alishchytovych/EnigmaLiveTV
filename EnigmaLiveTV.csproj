@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Serilog.AspNetCore" Version="*" />
+		<PackageReference Include="Serilog.Sinks.File" Version="*" />
+		<PackageReference Include="Serilog.Enrichers.Thread" Version="*" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="EnigmaLiveTV.service" CopyToOutputDirectory="Always" />
+	</ItemGroup>
+
+</Project>
