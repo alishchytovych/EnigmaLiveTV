@@ -6,6 +6,7 @@ namespace EnigmaLiveTV
 {
 	public interface IHRProxy
 	{
+		public Task<Discover> GetDiscoverAsync();
 		public Task<List<TVChannel>> GetChannelsAsync();
 		public Task<(MediaTypeHeaderValue, string)> GetArbitraryFileAsync(string path);
 	}

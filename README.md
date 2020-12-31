@@ -9,7 +9,9 @@ The service resides in between Enigma2 box (VU+ etc.) and EMBY media server. It 
 - Copy ZIP file to the Linux box. For example: `pscp build/build.zip root@emby.box.local:/root/`
 - Extract it: `unzip build.zip -d /root/EnigmaLiveTV`
 - **Important**: modify `/root/EnigmaLiveTV/appsettings.json`
-  -  Change `HRProxyUrl` to the address of HR-Tuner Proxy plugin
+  - Change `ExternalUrl` to the proper address of the service
+  - Change `HRProxyUrl` to the address of HR-Tuner Proxy plugin
+  - Change/add `CCTVChannels` items
 - Register as a service: 
   - `cp EnigmaLiveTV.service /etc/systemd/system/EnigmaLiveTV.service`
   - `systemctl daemon-reload`

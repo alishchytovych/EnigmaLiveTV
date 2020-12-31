@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace EnigmaLiveTV.Controllers
@@ -26,7 +28,7 @@ namespace EnigmaLiveTV.Controllers
 
 		[HttpGet]
 		[Route("/epg.xml")]
-		public async Task<IActionResult> Get()
+		public async Task<IActionResult> GetEPG()
 		{
 			var channels = await _proxy.GetChannelsAsync();
 			var ret = await _converter.ConvertChannelsAsync(channels);
@@ -36,9 +38,34 @@ namespace EnigmaLiveTV.Controllers
 				StatusCode = (int)HttpStatusCode.OK
 			};
 		}
-		
+
+		[HttpGet]
+		[Route("/lineup.json")]
+		public async Task<IActionResult> GetLineup()
+		{
+			var channels = await _proxy.GetChannelsAsync();
+			return new ContentResult {
+				Content = JsonSerializer.Serialize(channels),
+				ContentType = "application/json",
+				StatusCode = (int)HttpStatusCode.OK
+			};
+		}
+
+		[HttpGet]
+		[Route("/discover.json")]
+		public async Task<IActionResult> GetDiscover()
+		{
+			var channels = await _proxy.GetDiscoverAsync();
+			return new ContentResult {
+				Content = JsonSerializer.Serialize(channels),
+				ContentType = "application/json",
+				StatusCode = (int)HttpStatusCode.OK
+			};
+		}
+
+
 		[Route("/{**catchAll}")]
-		public async Task<IActionResult> CatchAll(string catchAll)
+		public async Task<IActionResult> UnknownRoute(string catchAll)
 		{
 			var ret = await _proxy.GetArbitraryFileAsync(catchAll);
 			return new ContentResult {
