@@ -52,6 +52,8 @@ namespace EnigmaLiveTV
 			{
 				item.GuideNumber = (i++).ToString();
 				item.Picon = _client.BaseAddress.Scheme + "://" + _client.BaseAddress.Host + "/picon/" + item.Picon;
+				item.SRef = "ExternalChannel"+item.GuideName;
+				item.External = true;
 				ret.Add(item);
 			}
 
@@ -64,7 +66,9 @@ namespace EnigmaLiveTV
 			{
 				item.GuideNumber = (i++).ToString();
 				var uri = new Uri(item.URL);
-				item.Picon = uri.Scheme + "://" + uri.Host + "/picon" + uri.LocalPath.Substring(0, uri.LocalPath.Length - 1).Replace(':', '_') + ".png";
+				item.SRef = uri.LocalPath.Substring(1, uri.LocalPath.Length - 2);
+				item.Picon = uri.Scheme + "://" + uri.Host + "/picon/" + item.SRef.Replace(':', '_') + ".png";
+				item.SRef+=":";
 				ret.Add(item);
 			}
 			return ret;

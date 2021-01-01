@@ -12,43 +12,41 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
-namespace EnigmaLiveTV
-{
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+namespace EnigmaLiveTV {
+	public class Startup {
+		public Startup(IConfiguration configuration) {
+			Configuration = configuration;
+		}
 
-        public IConfiguration Configuration { get; }
+		public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services) {
 			services.AddHttpClient<IHRProxy, HRProxy>(client => {
 				client.BaseAddress = new Uri(Configuration["HRProxyURL"]);
 				client.DefaultRequestHeaders.Add("Accept", "application/json");
 			});
+			services.AddHttpClient<IEPGProxy, EPGProxy>(client => {
+				client.BaseAddress = new Uri(Configuration["EPGUrl"]);
+				client.DefaultRequestHeaders.Add("Accept", "application/json");
+			});
+
 			services.AddScoped<IXMLTVConverter, XMLTVConverter>();
 
-            services.AddControllers();
-        }
+			services.AddControllers();
+		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+			if (env.IsDevelopment()) {
+				app.UseDeveloperExceptionPage();
 				Log.Information($"Local Url: {Configuration["Kestrel:EnigmaLiveTV:ExternalUrl"]}/epg.xml");
-            }
+			}
 
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
-    }
+			app.UseRouting();
+			app.UseEndpoints(endpoints => {
+				endpoints.MapControllers();
+			});
+		}
+	}
 }

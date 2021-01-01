@@ -17,12 +17,14 @@ namespace EnigmaLiveTV.Controllers
 	{
 		private readonly ILogger<CatchController> _logger;
 		private readonly IHRProxy _proxy;
+		private readonly IEPGProxy _epg;
 		private readonly IXMLTVConverter _converter;
 
-		public CatchController(ILogger<CatchController> logger, IHRProxy proxy, IXMLTVConverter converter)
+		public CatchController(ILogger<CatchController> logger, IHRProxy proxy, IEPGProxy epg, IXMLTVConverter converter)
 		{
 			_logger = logger;
 			_proxy = proxy;
+			_epg = epg;
 			_converter = converter;
 		}
 
@@ -31,7 +33,8 @@ namespace EnigmaLiveTV.Controllers
 		public async Task<IActionResult> GetEPG()
 		{
 			var channels = await _proxy.GetChannelsAsync();
-			var ret = await _converter.ConvertChannelsAsync(channels);
+			var programmes = await _epg.GetEPGAsync();
+			var ret = await _converter.ConvertChannelsAsync(channels, programmes);
 			return new ContentResult {
 				Content = ret,
 				ContentType = "application/xml",

@@ -5,6 +5,6 @@ namespace EnigmaLiveTV
 {
 	public interface IXMLTVConverter
 	{
-		public Task<string> ConvertChannelsAsync(List<TVChannel> list);
+		public Task<string> ConvertChannelsAsync(List<TVChannel> list, List<TVProgramme> programmes);
 	}
 }
