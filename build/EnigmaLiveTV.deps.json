@@ -25,6 +25,7 @@
     ".NETCoreApp,Version=v5.0": {
       "EnigmaLiveTV/1.0.0": {
         "dependencies": {
+          "GuidEx": "1.1.0",
           "Microsoft.Extensions.Hosting.Systemd": "5.0.1",
           "Serilog.AspNetCore": "3.4.0",
           "Serilog.Enrichers.Thread": "3.1.0",
@@ -318,6 +319,17 @@
         },
         "compile": {
           "EnigmaLiveTV.dll": {}
+        }
+      },
+      "GuidEx/1.1.0": {
+        "runtime": {
+          "lib/System.Extended.Core.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.0.0"
+          }
+        },
+        "compile": {
+          "lib/System.Extended.Core.dll": {}
         }
       },
       "Microsoft.CSharp/4.0.1": {
@@ -2820,6 +2832,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "GuidEx/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Roiu9RqQjjvDJoT9Jkhcl8ltDf6kn3LvAW0HPqieqox8EJ2BnSPBXpJqQ9QXHBoYns3aofeM3qawQBRJ/h+z/A==",
+      "path": "guidex/1.1.0",
+      "hashPath": "guidex.1.1.0.nupkg.sha512"
     },
     "Microsoft.CSharp/4.0.1": {
       "type": "package",

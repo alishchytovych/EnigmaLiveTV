@@ -5,6 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="GuidEx" Version="*" />
 		<PackageReference Include="Serilog.AspNetCore" Version="*" />
 		<PackageReference Include="Serilog.Sinks.File" Version="*" />
 		<PackageReference Include="Serilog.Enrichers.Thread" Version="*" />

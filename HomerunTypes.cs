@@ -1,7 +1,5 @@
-namespace EnigmaLiveTV
-{
-	public class Discover
-	 {
+namespace EnigmaLiveTV {
+	public class Discover {
 		public int TunerCount { get; set; }
 		public string DeviceAuth { get; set; }
 		public string DeviceUUID { get; set; }
@@ -13,5 +11,11 @@ namespace EnigmaLiveTV
 		public string FirmwareName { get; set; }
 		public string FirmwareVersion { get; set; }
 		public string Manufacturer { get; set; }
+	}
+
+	public class Lineup {
+		public string GuideNumber { get; set; }
+		public string GuideName { get; set; }
+		public string URL { get; set; }
 	}
 }

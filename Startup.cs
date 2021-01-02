@@ -22,16 +22,17 @@ namespace EnigmaLiveTV {
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services) {
-			services.AddHttpClient<IHRProxy, HRProxy>(client => {
-				client.BaseAddress = new Uri(Configuration["HRProxyURL"]);
-				client.DefaultRequestHeaders.Add("Accept", "application/json");
+			services.Configure<Settings>(Configuration.GetSection("EnigmaLiveTV"));
+			services.Configure<Settings>(options => {
+				options.ServiceAddress = Configuration["Kestrel:EnigmaLiveTV:ExternalUrl"];
 			});
-			services.AddHttpClient<IEPGProxy, EPGProxy>(client => {
-				client.BaseAddress = new Uri(Configuration["EPGUrl"]);
+
+			services.AddHttpClient<ISTBClient, STBClient>(client => {
 				client.DefaultRequestHeaders.Add("Accept", "application/json");
 			});
 
-			services.AddScoped<IXMLTVConverter, XMLTVConverter>();
+			services.AddScoped<IHomerun, Homerun>();
+			services.AddScoped<IXMLTV, XMLTV>();
 
 			services.AddControllers();
 		}
@@ -40,7 +41,7 @@ namespace EnigmaLiveTV {
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
 			if (env.IsDevelopment()) {
 				app.UseDeveloperExceptionPage();
-				Log.Information($"Local Url: {Configuration["Kestrel:EnigmaLiveTV:ExternalUrl"]}/epg.xml");
+				Log.Information($"Local Url: {Configuration["Kestrel:EnigmaLiveTV:ExternalUrl"]}/xmltv");
 			}
 
 			app.UseRouting();

@@ -13,30 +13,32 @@ namespace EnigmaLiveTV.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	public class CatchController : ControllerBase
+	public class FileController : ControllerBase
 	{
-		private readonly ILogger<CatchController> _logger;
-		private readonly IHRProxy _proxy;
-		private readonly IEPGProxy _epg;
-		private readonly IXMLTVConverter _converter;
+		private readonly ILogger<FileController> _logger;
+		private readonly ISTBClient _stb;
+		private readonly IHomerun _homerun;
+		private readonly IXMLTV _xmltv;
 
-		public CatchController(ILogger<CatchController> logger, IHRProxy proxy, IEPGProxy epg, IXMLTVConverter converter)
+		public FileController(ILogger<FileController> logger, ISTBClient stb, IHomerun homerun, IXMLTV xmltv)
 		{
 			_logger = logger;
-			_proxy = proxy;
-			_epg = epg;
-			_converter = converter;
+			_stb = stb;
+			_homerun = homerun;
+			_xmltv = xmltv;
 		}
 
 		[HttpGet]
-		[Route("/epg.xml")]
-		public async Task<IActionResult> GetEPG()
+		[Route("/xmltv")]
+		public async Task<IActionResult> GetXMLTV()
 		{
-			var channels = await _proxy.GetChannelsAsync();
-			var programmes = await _epg.GetEPGAsync();
-			var ret = await _converter.ConvertChannelsAsync(channels, programmes);
+			_logger.LogInformation("xmltv requested");
+
+			var epg = await _stb.GetEPGAsync();
+			var xmltv = await _xmltv.GetXMLTVAsync(epg);
+
 			return new ContentResult {
-				Content = ret,
+				Content = xmltv,
 				ContentType = "application/xml",
 				StatusCode = (int)HttpStatusCode.OK
 			};
@@ -46,9 +48,12 @@ namespace EnigmaLiveTV.Controllers
 		[Route("/lineup.json")]
 		public async Task<IActionResult> GetLineup()
 		{
-			var channels = await _proxy.GetChannelsAsync();
+			_logger.LogInformation("lineup.json requested");
+			var epg = await _stb.GetEPGAsync();
+			var lineup = await _homerun.GetLineupAsync(epg);
+
 			return new ContentResult {
-				Content = JsonSerializer.Serialize(channels),
+				Content = JsonSerializer.Serialize(lineup),
 				ContentType = "application/json",
 				StatusCode = (int)HttpStatusCode.OK
 			};
@@ -58,9 +63,12 @@ namespace EnigmaLiveTV.Controllers
 		[Route("/discover.json")]
 		public async Task<IActionResult> GetDiscover()
 		{
-			var channels = await _proxy.GetDiscoverAsync();
+			_logger.LogInformation("discover.json requested");
+			var deviceinfo = await _stb.GetDeviceInfoAsync();
+			var discover = await _homerun.GetDiscoverAsync(deviceinfo);
+
 			return new ContentResult {
-				Content = JsonSerializer.Serialize(channels),
+				Content = JsonSerializer.Serialize(discover),
 				ContentType = "application/json",
 				StatusCode = (int)HttpStatusCode.OK
 			};
@@ -70,7 +78,8 @@ namespace EnigmaLiveTV.Controllers
 		[Route("/{**catchAll}")]
 		public async Task<IActionResult> UnknownRoute(string catchAll)
 		{
-			var ret = await _proxy.GetArbitraryFileAsync(catchAll);
+			_logger.LogInformation("Unknown API requested: "+catchAll);
+			var ret = await _stb.GetAnyURL(catchAll);
 			return new ContentResult {
 				Content = ret.Item2,
 				ContentType = ret.Item1.ToString(),
