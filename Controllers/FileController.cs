@@ -60,6 +60,21 @@ namespace EnigmaLiveTV.Controllers
 		}
 
 		[HttpGet]
+		[Route("/lineup_status.json")]
+		public async Task<IActionResult> GetLineupStatus()
+		{
+			_logger.LogInformation("lineup_status.json requested");
+			var lineupStatus = await _homerun.GetLineupStatusAsync();
+
+			return new ContentResult {
+				Content = JsonSerializer.Serialize(lineupStatus),
+				ContentType = "application/json",
+				StatusCode = (int)HttpStatusCode.OK
+			};
+		}
+
+
+		[HttpGet]
 		[Route("/discover.json")]
 		public async Task<IActionResult> GetDiscover()
 		{

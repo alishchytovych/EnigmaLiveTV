@@ -21,7 +21,7 @@ namespace EnigmaLiveTV {
 				TunerCount = info.Tuners.Length,
 				DeviceAuth = "no",
 				DeviceUUID = id,
-				BaseURL = _settings.Value.STB,
+				BaseURL = _settings.Value.ServiceAddress, //_settings.Value.STB,
 				ModelNumber = info.Model,
 				DeviceID = id.Substring(id.Length-8),
 				FriendlyName = info.BoxType,
@@ -33,6 +33,7 @@ namespace EnigmaLiveTV {
 			_logger.LogDebug($"Object discover: {ret}");
 			return ret;
 		}
+
 		public async Task<List<Lineup>> GetLineupAsync(STBEPG epg) {
 			int offset = 0;
 			var list = new List<Lineup>();
@@ -54,5 +55,10 @@ namespace EnigmaLiveTV {
 			_logger.LogDebug($"Object lineup: {list}");
 			return list;
 		}
+
+		public async Task<LineupStatus> GetLineupStatusAsync() {
+			return new LineupStatus();
+		}
+
 	}
 }

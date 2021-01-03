@@ -18,4 +18,12 @@ namespace EnigmaLiveTV {
 		public string GuideName { get; set; }
 		public string URL { get; set; }
 	}
+
+	public class LineupStatus {
+		public int ScanInProgress {get;set;} = 0;
+		public int ScanPossible {get;set;} = 1;
+		public string Source {get;set;} = "Antenna";
+		public string[] SourceList {get;set;} = { "Antenna" };
+	}
+
 }
