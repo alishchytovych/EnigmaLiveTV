@@ -1,4 +1,4 @@
-# Simple Enigma2 / EMBY proxy for LiveTV
+# Simple Enigma2 proxy for PLEX, EMBY, Jellifin LiveTV
 The service resides in between Enigma2 box (VU+ etc.) and EMBY/PLEX/Jellyfin media server. It emulates HDHomerun and provides with XMLTV program data (EPG data and picons are provided by the Enigma2 box).
 
 ## Prerequisites
