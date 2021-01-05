@@ -14,10 +14,13 @@ The service resides in between Enigma2 box (VU+ etc.) and EMBY/PLEX/Jellyfin med
   - Change `Filter` to your bouquete name etc.
   - Change `AdditionalChannels` to the other streaming devices (CCTV, IPTV etc.). Note - PLEX is unable to play RTSP streams directly, maybe I'll implement transcoding support later.
 - Register as a service: 
-  - `cp EnigmaLiveTV.service /etc/systemd/system/EnigmaLiveTV.service`
+  - `cp EnigmaLiveTV/EnigmaLiveTV.service /etc/systemd/system/EnigmaLiveTV.service`
   - `systemctl daemon-reload`
   - `systemctl start EnigmaLiveTV`
   - `systemctl enable EnigmaLiveTV`
+- Enable the port in the firewall (if needed). Fedora example:
+  - `firewall-cmd --permanent --add-port=5000/tcp`
+  - `firewall-cmd --reload`
 - Configure EMBY (LiveTV):
   - HDHomerun -> http://emby.box.local:5000
   - XMLTV -> http://emby.box.local:5000/xmltv
